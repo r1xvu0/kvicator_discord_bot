@@ -1,6 +1,5 @@
-from unicodedata import name
 import discord
-from discord.ext import commands,tasks
+from discord.ext import commands, tasks
 import os
 from dotenv import load_dotenv
 from random import randint
@@ -14,6 +13,17 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 client = discord.Client()
 
 bot = commands.Bot(command_prefix='!')
+
+@bot.command(name="kvic-help", help="Help menu")
+async def print_help(ctx):
+    await ctx.send(f"""
+    !join: Joins your Voice Channel
+    !leave: Leaves current Voice Channel
+    !play: Play random Ludas sound
+    !stop: Stops playing
+    !pause: Pauses current sound
+    !resume: Resumes and plays from where left off.
+    """)
 
 @bot.command(name='join', help="joins the audio channel")
 async def join(ctx):
@@ -38,7 +48,7 @@ async def play(ctx):
     try:
         server = ctx.message.guild
         voice_channel = server.voice_client
-        
+
         async with ctx.typing():
             voice_channel.play(discord.FFmpegPCMAudio(source='./ludas/' + str(id) + '.m4a'))
             # voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source='./ludas/' + str(id) + '.m4a'))
